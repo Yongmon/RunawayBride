@@ -11,8 +11,9 @@ GameObject:
   - component: {fileID: 7947624533454823267}
   - component: {fileID: 3338913884224214473}
   - component: {fileID: 8621595773881035837}
+  - component: {fileID: 7317715765309893883}
   m_Layer: 5
-  m_Name: ClueText(TMP) 1
+  m_Name: ClueText(TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -128,9 +129,23 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: 0, w: 0}
+  m_margin: {x: -30.811768, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
+--- !u!114 &7317715765309893883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5352539861391689194}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 16403dce1aae12141bbc2ae10529dc3d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clueID: 
+  label: {fileID: 8621595773881035837}
