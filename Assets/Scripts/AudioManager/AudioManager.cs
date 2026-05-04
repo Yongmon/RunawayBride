@@ -100,6 +100,8 @@ public class AudioManager : MonoBehaviour
             return;
 
         bgmSource.clip = clip;
+        // --- 修复点：强制开启循环 ---
+        bgmSource.loop = true;
         bgmSource.Play();
     }
 
