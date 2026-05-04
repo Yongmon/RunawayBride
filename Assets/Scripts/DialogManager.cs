@@ -87,33 +87,38 @@ public class DialogManager : MonoBehaviour
         skipRequested = false;
         dialogText.text = "";
 
+        // 【新增】打字开始：开启长段循环音效
+        if (playTypingSound && !string.IsNullOrEmpty(typingSoundName))
+        {
+            AudioManager.Instance?.PlayLoopingSFX(typingSoundName);
+        }
+
         int totalChars = fullText.Length;
         for (int i = 0; i < totalChars; i++)
         {
             if (skipRequested)
             {
-                // 跳过：直接显示完整文本，并停止音效（如需）
                 dialogText.text = fullText;
-                // 可选：停止打字音效循环（如果有）
                 break;
             }
 
             dialogText.text += fullText[i];
 
-            // 播放打字音效（每输入一个字符）
-            if (playTypingSound && !string.IsNullOrEmpty(typingSoundName))
-            {
-                AudioManager.Instance?.PlaySFX(typingSoundName);
-            }
-
-            // 遇到标点符号适当延长停顿（提升阅读感）
             float delay = typingSpeed;
             if (fullText[i] == '.' || fullText[i] == '!' || fullText[i] == '?' ||
                 fullText[i] == '。' || fullText[i] == '！' || fullText[i] == '？')
             {
+                // 遇到标点符号时，如果你想让声音也停顿，可以临时暂停声音
+                // 但对于长音效，不停顿通常听起来更自然。如果需要停顿，可以在这里 Stop 再在 delay 后 Play
                 delay = typingSpeed * 2;
             }
             yield return new WaitForSeconds(delay);
+        }
+
+        // 【新增】打字结束或被跳过：停止音效
+        if (playTypingSound)
+        {
+            AudioManager.Instance?.StopSFX();
         }
 
         isTyping = false;
@@ -152,6 +157,12 @@ public class DialogManager : MonoBehaviour
     {
         if (typingCoroutine != null)
             StopCoroutine(typingCoroutine);
+
+        // 【保险】结束对话时务必关闭声音
+        if (playTypingSound)
+        {
+            AudioManager.Instance?.StopSFX();
+        }
         isTyping = false;
         dialogPanel.SetActive(false);
         IsDialogActive = false;

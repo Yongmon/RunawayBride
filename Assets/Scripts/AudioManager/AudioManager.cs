@@ -210,4 +210,44 @@ public class AudioManager : MonoBehaviour
     // 可以通过 Mixer 的 SetFloat 方法调整音量，通常配合 UI 滑动条使用。
     // 示例：
     // public void SetBGMVolume(float volume) { bgmMixer.audioMixer.SetFloat("BGMVolume", volume); }
+
+
+
+
+    // ==================== 音效（SFX）控制增强 ====================
+
+    /// <summary>
+    /// 循环播放特定音效（适用于长段打字音）
+    /// </summary>
+    public void PlayLoopingSFX(string sfxId)
+    {
+        if (sfxSource == null) return;
+
+        if (sfxDictionary.TryGetValue(sfxId, out AudioClip clip))
+        {
+            // 如果已经在播放该音效，就不重复播放
+            if (sfxSource.clip == clip && sfxSource.isPlaying) return;
+
+            sfxSource.clip = clip;
+            sfxSource.loop = true; // 开启循环，防止 6 秒后音效突然断掉
+            sfxSource.Play();
+        }
+    }
+
+    /// <summary>
+    /// 强制停止当前音效源的播放
+    /// </summary>
+    public void StopSFX()
+    {
+        if (sfxSource != null)
+        {
+            sfxSource.Stop();
+            sfxSource.loop = false; // 记得重置循环状态
+        }
+    }
+
+
+
+
+
 }
