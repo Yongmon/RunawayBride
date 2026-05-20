@@ -16,13 +16,14 @@ public class ClueManager : MonoBehaviour
     private Dictionary<string, string> clueDisplayNames = new Dictionary<string, string>
     {
         { "IDcard", "工作牌" },
-        { "clothes", "制服" }
+        { "clothes", "制服" },
+        {"Insulated cup","保温杯" }
     };
 
     // ========== 新增：连线推理部分 ==========
-    [Header("连线设置")]
-    public LineRenderer lineRenderer;        // 拖入 LineRendererObject
-    public Camera uiCamera;                  // 如果是 Screen Space - Camera 模式需要；Overlay 模式可留空
+    //[Header("连线设置")]
+    //public LineRenderer lineRenderer;        // 拖入 LineRendererObject
+    //public Camera uiCamera;                  // 如果是 Screen Space - Camera 模式需要；Overlay 模式可留空
 
     [Header("推理反馈")]
     public GameObject failTipPrefab;         // 失败提示预制体（纯文字 TMP_Text）
@@ -31,13 +32,14 @@ public class ClueManager : MonoBehaviour
     // 内部状态
     private ClueEntry selectedEntryA = null; // 第一个选中的线索
     private ClueEntry selectedEntryB = null; // 第二个选中的线索
-    private bool isDrawingLine = false;
+    //private bool isDrawingLine = false;
 
     // 推理表（暂时硬编码，后续可从 CharacterData 读取）
     private Dictionary<(string, string), string> reasoningTable = new Dictionary<(string, string), string>
     {
         { ("clothes", "IDcard"), "安检员" },
         { ("IDcard", "clothes1"), "安检员" },
+        { ("IDcard", "Insulated cup"), "安检员1" },
     };
 
     private void Awake()
@@ -47,12 +49,12 @@ public class ClueManager : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
-    private void Start()
-    {
-        // 初始隐藏连线
-        if (lineRenderer != null)
-            lineRenderer.positionCount = 0;
-    }
+    //private void Start()
+    //{
+    //    // 初始隐藏连线
+    //    if (lineRenderer != null)
+    //        lineRenderer.positionCount = 0;
+    //}
 
     // ========== 收集线索 ==========
     public void AddClue(string clueID)
@@ -116,7 +118,7 @@ public class ClueManager : MonoBehaviour
             selectedEntryA = entry;
             Highlight(selectedEntryA, true);
             Debug.Log("✔ 选中第一个");
-            StartDrawingLine(entry);
+            //StartDrawingLine(entry);
         }
         else if (selectedEntryA == entry)
         {
@@ -129,7 +131,7 @@ public class ClueManager : MonoBehaviour
             selectedEntryB = entry;
             Highlight(selectedEntryB, true);
             Debug.Log("✔ 选中第二个");
-            CompleteLine(entry);   // 连线固定到第二个
+            //CompleteLine(entry);   // 连线固定到第二个
         }
     }
 
@@ -141,65 +143,60 @@ public class ClueManager : MonoBehaviour
     }
 
     // 开始画线（跟随鼠标）
-    private void StartDrawingLine(ClueEntry startEntry)
-    {
-        if (lineRenderer == null) return;
+    //private void StartDrawingLine(ClueEntry startEntry)
+    //{
+    //    if (lineRenderer == null) return;
 
-        isDrawingLine = true;
-        lineRenderer.positionCount = 2;
+    //    isDrawingLine = true;
+    //    lineRenderer.positionCount = 2;
 
-        Vector3 startScreen = RectTransformUtility.WorldToScreenPoint(
-            uiCamera, startEntry.transform.position);
+    //    Vector3 startScreen = RectTransformUtility.WorldToScreenPoint(
+    //        uiCamera, startEntry.transform.position);
 
-        Vector3 startWorld = ScreenToWorld(startScreen);
+    //    Vector3 startWorld = ScreenToWorld(startScreen);
 
-        lineRenderer.SetPosition(0, startWorld);
-        lineRenderer.SetPosition(1, startWorld);
-    }
+    //    lineRenderer.SetPosition(0, startWorld);
+    //    lineRenderer.SetPosition(1, startWorld);
+    //}
 
     // 完成连线（固定到第二个线索）
-    private void CompleteLine(ClueEntry endEntry)
-    {
-        isDrawingLine = false;
+    //private void CompleteLine(ClueEntry endEntry)
+    //{
+    //    isDrawingLine = false;
 
-        Vector3 endScreen = RectTransformUtility.WorldToScreenPoint(
-            uiCamera, endEntry.transform.position);
+    //    Vector3 endScreen = RectTransformUtility.WorldToScreenPoint(
+    //        uiCamera, endEntry.transform.position);
 
-        Vector3 endWorld = ScreenToWorld(endScreen);
+    //    Vector3 endWorld = ScreenToWorld(endScreen);
 
-        lineRenderer.SetPosition(1, endWorld);
-    }
+    //    lineRenderer.SetPosition(1, endWorld);
+    //}
 
     // 每帧更新线条终点（跟随鼠标）
     private void Update()
     {
-        if (isDrawingLine && selectedEntryA != null && lineRenderer != null)
-        {
-            UpdateLineEndPoint();
-        }
-
-        // 空格推理
-        if (Input.GetKeyDown(KeyCode.Space) && selectedEntryA != null && selectedEntryB != null)
+        if (Input.GetKeyDown(KeyCode.Space)
+            && selectedEntryA != null
+            && selectedEntryB != null)
         {
             TryReasoning();
         }
     }
 
-    private void UpdateLineEndPoint()
-    {
-        Vector3 worldPos = ScreenToWorld(Input.mousePosition);
-        lineRenderer.SetPosition(1, worldPos);
-    }
+    //private void UpdateLineEndPoint()
+    //{
+    //    Vector3 worldPos = ScreenToWorld(Input.mousePosition);
+    //    lineRenderer.SetPosition(1, worldPos);
+    //}
 
     // 清除选中和连线
     public void ClearSelection()
     {
         if (selectedEntryA != null) Highlight(selectedEntryA, false);
         if (selectedEntryB != null) Highlight(selectedEntryB, false);
+
         selectedEntryA = null;
         selectedEntryB = null;
-        isDrawingLine = false;
-        if (lineRenderer != null) lineRenderer.positionCount = 0;
     }
 
     // ========== 推理逻辑 ==========
@@ -251,17 +248,24 @@ public class ClueManager : MonoBehaviour
                 clueEntry.label.color = new Color(1f, 0.84f, 0f);
             }
         }
-    }
-    // 【新增】屏幕坐标 → 世界坐标
-    Vector3 ScreenToWorld(Vector3 screenPos)
-    {
-        screenPos.z = 50f; // ⭐ 很关键！控制深度（看不到线就调大）
 
-        if (uiCamera != null)
-            return uiCamera.ScreenToWorldPoint(screenPos);
-        else
-            return Camera.main.ScreenToWorldPoint(screenPos);
+        // ----- 新增：在主界面生成可拖拽气泡 -----
+        if (BubbleManager.Instance != null)
+        {
+            string displayName = clueDisplayNames.ContainsKey(clueID) ? clueDisplayNames[clueID] : clueID;
+            BubbleManager.Instance.CreateBubble(displayName);
+        }
     }
+    //// 【新增】屏幕坐标 → 世界坐标
+    //Vector3 ScreenToWorld(Vector3 screenPos)
+    //{
+    //    screenPos.z = 50f; // ⭐ 很关键！控制深度（看不到线就调大）
+
+    //    if (uiCamera != null)
+    //        return uiCamera.ScreenToWorldPoint(screenPos);
+    //    else
+    //        return Camera.main.ScreenToWorldPoint(screenPos);
+    //}
     // 失败提示框
     private IEnumerator ShowFailTip()
     {

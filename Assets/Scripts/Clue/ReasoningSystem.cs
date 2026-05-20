@@ -9,8 +9,17 @@ public class ReasoningSystem : MonoBehaviour
     private ClueItem selectedA;
     private ClueItem selectedB;
 
+
+    //新连线系统
     [Header("连线UI")]
-    public RectTransform line;
+    // 临时线
+    public RectTransform tempLine;
+
+    // 永久线预制体
+    public GameObject linePrefab;
+
+    // 永久线父物体
+    public Transform lineLayer;
     public Canvas canvas;
 
     [Header("失败提示")]
@@ -58,18 +67,18 @@ public class ReasoningSystem : MonoBehaviour
     // ⭐ 显示线
     void ShowLine(Vector3 start)
     {
-        line.gameObject.SetActive(true);
-        line.position = start;
+        tempLine.gameObject.SetActive(true);
+        tempLine.position = start;
     }
 
     // ⭐ 跟随鼠标
     void UpdateLine(Vector3 end)
     {
-        Vector3 dir = end - line.position;
+        Vector3 dir = end - tempLine.position;
         float dist = dir.magnitude;
 
-        line.sizeDelta = new Vector2(dist, 5f);
-        line.right = dir.normalized;
+        tempLine.sizeDelta = new Vector2(dist, 5f);
+        tempLine.right = dir.normalized;
     }
 
     // ⭐ 固定到第二个点
@@ -92,6 +101,8 @@ public class ReasoningSystem : MonoBehaviour
         {
             Debug.Log("✅ 推理成功！");
 
+            CreatePersistentLine(selectedA, selectedB);
+
             // 👉 添加新线索
             ClueManager.Instance.AddClue("result_clue");
         }
@@ -103,6 +114,26 @@ public class ReasoningSystem : MonoBehaviour
         }
 
         ResetSelection();
+    }
+
+
+    //生成永久线
+    void CreatePersistentLine(ClueItem a, ClueItem b)
+    {
+        GameObject obj = Instantiate(linePrefab, lineLayer);
+
+        RectTransform rt = obj.GetComponent<RectTransform>();
+
+        Vector3 start = a.transform.position;
+        Vector3 end = b.transform.position;
+
+        rt.position = start;
+
+        Vector3 dir = end - start;
+        float dist = dir.magnitude;
+
+        rt.sizeDelta = new Vector2(dist, 5f);
+        rt.right = dir.normalized;
     }
 
     bool IsCorrectPair(string a, string b)
@@ -126,6 +157,6 @@ public class ReasoningSystem : MonoBehaviour
         selectedA = null;
         selectedB = null;
 
-        line.gameObject.SetActive(false);
+        tempLine.gameObject.SetActive(false);
     }
 }
