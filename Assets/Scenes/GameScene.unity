@@ -2740,6 +2740,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dialoguePanel: {fileID: 1114988250}
   dialogueText: {fileID: 1202941338}
+  verticalMode: 1
+  charsPerColumn: 8
 --- !u!1 &1138261293
 GameObject:
   m_ObjectHideFlags: 0
@@ -2857,7 +2859,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u8FD9\u662F\u4E00\u6BB5\u65B0\u5BF9\u8BDD\n"
+  m_text: "\u8FD9\u662F\u4E00\u6BB5\u65B0\u5BF9\u8BDD\n\u662F\u7684\uFF0C\u770B\u6765\u4F60\u90FD\u5DF2\u7ECF\u638C\u63E1\u4E86\uFF0C\u63A5\u4E0B\u6765\u597D\u597D\u5E72\uFF0C\u522B\u8BA9\u7EC4\u7EC7\u5931\u671B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 99f0c68559ef98e429db010618e6a2c6, type: 2}
   m_sharedMaterial: {fileID: -1764763814988707067, guid: 99f0c68559ef98e429db010618e6a2c6, type: 2}
@@ -2891,7 +2893,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 0
-  m_HorizontalAlignment: 1
+  m_HorizontalAlignment: 4
   m_VerticalAlignment: 256
   m_textAlignment: 65535
   m_characterSpacing: 0
@@ -2900,7 +2902,7 @@ MonoBehaviour:
   m_lineSpacingMax: 0
   m_paragraphSpacing: 0
   m_charWidthMaxAdj: 0
-  m_enableWordWrapping: 1
+  m_enableWordWrapping: 0
   m_wordWrappingRatios: 0.4
   m_overflowMode: 0
   m_linkedTextComponent: {fileID: 0}
