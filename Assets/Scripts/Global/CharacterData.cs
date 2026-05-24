@@ -29,7 +29,7 @@ public class CharacterData
     public List<BubbleData> bubbles;
 
     [Header("该人物拥有的物品")]
-  //  public List<ItemData> items;
+    public List<ItemData> items;
 
     [Header("是否调查完成")]
     public bool isCompleted;

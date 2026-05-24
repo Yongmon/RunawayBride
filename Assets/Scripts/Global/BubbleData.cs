@@ -10,12 +10,12 @@ public class BubbleData
     [Header("Bubble名称")]
     public string bubbleName;
 
-    [Header("Bubble描述")]
-    [TextArea]
-    public string description;
+    //[Header("Bubble描述")]
+    //[TextArea]
+    //public string description;
 
-    [Header("Bubble图片")]
-    public Sprite bubbleSprite;
+    //[Header("Bubble图片")]
+    //public Sprite bubbleSprite;
 
     [Header("是否已解锁")]
     public bool unlocked;

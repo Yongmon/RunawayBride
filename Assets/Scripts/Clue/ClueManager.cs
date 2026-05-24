@@ -15,7 +15,7 @@ public class ClueManager : MonoBehaviour
 
     private Dictionary<string, string> clueDisplayNames = new Dictionary<string, string>
     {
-        { "IDcard", "工作牌" },
+        { "work_card", "工作牌" },
         { "clothes", "制服" },
         {"Insulated cup","保温杯" }
     };
@@ -37,9 +37,9 @@ public class ClueManager : MonoBehaviour
     // 推理表（暂时硬编码，后续可从 CharacterData 读取）
     private Dictionary<(string, string), string> reasoningTable = new Dictionary<(string, string), string>
     {
-        { ("clothes", "IDcard"), "安检员" },
-        { ("IDcard", "clothes1"), "安检员" },
-        { ("IDcard", "Insulated cup"), "安检员1" },
+        { ("clothes", "work_card"), "安检员" },
+        { ("work_card", "clothes"), "安检员" },
+        
     };
 
     private void Awake()

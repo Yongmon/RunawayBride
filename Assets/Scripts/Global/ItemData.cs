@@ -1,39 +1,32 @@
-//using UnityEngine;
+using UnityEngine;
 
-//[System.Serializable]
-//public class ItemData
-//{
-//    [Header("物品ID")]
-//    public string itemId;
+[System.Serializable]
+public class ItemData
+{
+    [Header("物品ID")]
+    public string itemId;
 
-//    [Header("物品名称")]
-//    public string itemName;
+    [Header("物品名称")]
+    public string itemName;
 
-//    // =========================
-//    // 图片
-//    // =========================
+    // =========================
+    // 图片
+    // =========================
 
-//    [Header("X光图片")]
-//    public Sprite xraySprite;
+    [Header("X光图片")]
+    public Sprite xraySprite;
 
-//    [Header("实物图片")]
-//    public Sprite realSprite;
+    [Header("实物图片")]
+    public Sprite realSprite;
 
-//    // =========================
-//    // 描述
-//    // =========================
+    // =========================
+    // 描述
+    // =========================
 
-//    [Header("物品描述")]
-//    [TextArea]
-//    public string itemDescription;
+    [Header("物品描述")]
+    [TextArea]
+    public string itemDescription;
 
-//    [Header("标题颜色")]
-//    public string nameColor = "#1E3A8A";
-
-//    // =========================
-//    // 状态
-//    // =========================
-
-//    [Header("是否已调查")]
-//    public bool isInvestigated;
-//}
+    [Header("标题颜色")]
+    public string nameColor = "#1E3A8A";
+}

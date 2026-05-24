@@ -516,7 +516,22 @@ MonoBehaviour:
     folderPortrait: {fileID: 21300000, guid: 891271fa5bb357440b3fb6c6c5a74624, type: 3}
     suitcaseBackground: {fileID: -1457830201, guid: fa015dba1fb17474db3eba862e0849bf, type: 3}
     sceneBackground: {fileID: 0}
-    clues: []
+    clues:
+    - clueId: 1
+      clueName: "\u6C34\u676F"
+      description: "\u5BF9\u793E\u755C\u53CB\u597D\u7684\u4FDD\u6E29\u676F"
+      clueSprite: {fileID: 0}
+      collected: 0
+    - clueId: 
+      clueName: 
+      description: 
+      clueSprite: {fileID: 0}
+      collected: 0
+    - clueId: 
+      clueName: 
+      description: 
+      clueSprite: {fileID: 0}
+      collected: 0
     bubbles: []
     isCompleted: 0
   - characterId: 2
@@ -736,8 +751,8 @@ GameObject:
   m_Component:
   - component: {fileID: 326367413}
   - component: {fileID: 326367412}
-  - component: {fileID: 326367415}
   - component: {fileID: 326367416}
+  - component: {fileID: 326367415}
   - component: {fileID: 326367417}
   m_Layer: 0
   m_Name: "\u672C\u5B50 \u7B14_0"
@@ -825,9 +840,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemName: "\u672C\u5B50\u3001\u7B14"
   itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
+  xraySprite: {fileID: 1401154712, guid: 3be63baea749a2946b27f2b2d7e6484b, type: 3}
+  realSprite: {fileID: 1271072954, guid: aebf6c739e3fd184c93680c3b4659c56, type: 3}
 --- !u!61 &326367416
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -880,7 +897,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 326367411}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18939cc08e803b542818e282d6c7a7c4, type: 3}
   m_Name: 
@@ -2124,9 +2141,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemName: "\u978B\u5B50"
   itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
+  xraySprite: {fileID: 754022320, guid: e69db9da6f5b9f8419aed50dd58bedeb, type: 3}
+  realSprite: {fileID: -594711589, guid: 8f428f19c3f0b884e821da6a599b9088, type: 3}
 --- !u!61 &643368263
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -2179,7 +2198,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 643368258}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18939cc08e803b542818e282d6c7a7c4, type: 3}
   m_Name: 
@@ -2538,6 +2557,8 @@ MonoBehaviour:
   itemName: "\u624B\u7535\u7B52"
   itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
+  xraySprite: {fileID: -2143821787, guid: a234b23746ebc1443a71575c0e0bed19, type: 3}
+  realSprite: {fileID: -912571045, guid: 1650f6ba28c64c940b04b46ee8c19eab, type: 3}
 --- !u!114 &954717407
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -2545,7 +2566,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 954717402}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18939cc08e803b542818e282d6c7a7c4, type: 3}
   m_Name: 
@@ -3816,8 +3837,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: "\u5DE5\u4F5C\u724C"
-  itemDescription: "\u4E00\u5F20\u5DE5\u4F5C\u724C\uFF0C\u7167\u7247\u4E0A\u7684\u4EBA\u6BD4\u672C\u4EBA<link=\"more_spirited\">\r\n<color=#FF8C00>\u66F4\u7CBE\u795E</color></link>\u4E00\u70B9\u3002"
+  itemDescription: "\u4E00\u5F20<link=\"work_card\"><color=#FF8C00>\u5DE5\u4F5C\u724C</color></link>\uFF0C\u7167\u7247\u4E0A\u7684\u4EBA\u6BD4\u672C\u4EBA\u66F4\u7CBE\u795E\u4E00\u70B9\u3002"
   nameColor: '#1E3A8A'
+  xraySprite: {fileID: -1994344370, guid: 857c05d258f9ec44fa6b8a94a88f223f, type: 3}
+  realSprite: {fileID: -1408557332, guid: 4e469878aec4ed74caa35c94d78e2b26, type: 3}
 --- !u!114 &1564223184
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3825,7 +3848,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1564223178}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18939cc08e803b542818e282d6c7a7c4, type: 3}
   m_Name: 
@@ -3845,7 +3868,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55cd01cb963214b4dafbcbfccf67b6fc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemRenderer: {fileID: 0}
 --- !u!1 &1662276053
 GameObject:
   m_ObjectHideFlags: 0
@@ -4079,9 +4101,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemName: "\u5236\u670D"
   itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
+  xraySprite: {fileID: 1794196863, guid: 578266630f841804680a7eb5d9725333, type: 3}
+  realSprite: {fileID: -150085744, guid: 65e7884f27a98c94c9277dda152d98ae, type: 3}
 --- !u!61 &1713398748
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5232,9 +5256,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemName: "\u6C34\u676F"
   itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
+  xraySprite: {fileID: -616542166, guid: 179c4529c77cb614c91695d8c9280747, type: 3}
+  realSprite: {fileID: 307000466, guid: 5bc11c4ae2227634ab8526677bccf58b, type: 3}
 --- !u!61 &2043806462
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -5287,7 +5313,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2043806457}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 18939cc08e803b542818e282d6c7a7c4, type: 3}
   m_Name: 
