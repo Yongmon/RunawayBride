@@ -19,8 +19,11 @@ public class CharacterData
     [Header("行李箱背景")]
     public Sprite suitcaseBackground;
 
-    [Header("人物场景背景")]
-    public Sprite sceneBackground;
+    //[Header("人物场景背景")]
+    //public Sprite sceneBackground;
+
+    [Header("该人物拥有的物品")]
+    public List<ItemData> items;
 
     [Header("普通线索")]
     public List<ClueData> clues;
@@ -28,8 +31,7 @@ public class CharacterData
     [Header("推理Bubble")]
     public List<BubbleData> bubbles;
 
-    [Header("该人物拥有的物品")]
-    public List<ItemData> items;
+   
 
     [Header("是否调查完成")]
     public bool isCompleted;

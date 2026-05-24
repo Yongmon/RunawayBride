@@ -59,8 +59,8 @@ public class UIManager : MonoBehaviour
         suitcaseBackgroundImage.sprite =
             data.suitcaseBackground;
 
-        sceneBackgroundImage.sprite =
-            data.sceneBackground;
+        //sceneBackgroundImage.sprite =
+        //    data.sceneBackground;
 
         // ======================================
         // 刷新场景物品（重点）
