@@ -7,281 +7,370 @@ public class ClueManager : MonoBehaviour
 {
     public static ClueManager Instance;
 
-    // ========== 原有部分 ==========
-    [Header("线索显示")]
+    // =====================================
+    // 文件夹UI
+    // =====================================
+
+    [Header("线索预制体")]
     public GameObject clueEntryPrefab;
+
+    [Header("线索父物体")]
     public Transform clueListParent;
-    private HashSet<string> collectedClues = new HashSet<string>();
 
-    private Dictionary<string, string> clueDisplayNames = new Dictionary<string, string>
-    {
-        { "work_card", "工作牌" },
-        { "clothes", "制服" },
-        {"Insulated cup","保温杯" }
-    };
+    // =====================================
+    // 推理失败提示
+    // =====================================
 
-    // ========== 新增：连线推理部分 ==========
-    //[Header("连线设置")]
-    //public LineRenderer lineRenderer;        // 拖入 LineRendererObject
-    //public Camera uiCamera;                  // 如果是 Screen Space - Camera 模式需要；Overlay 模式可留空
+    [Header("推理失败提示")]
+    public GameObject failTipPrefab;
 
-    [Header("推理反馈")]
-    public GameObject failTipPrefab;         // 失败提示预制体（纯文字 TMP_Text）
-    public Transform failTipParent;          // 提示出现位置（可放在 Canvas 下）
+    public Transform failTipParent;
 
-    // 内部状态
-    private ClueEntry selectedEntryA = null; // 第一个选中的线索
-    private ClueEntry selectedEntryB = null; // 第二个选中的线索
-    //private bool isDrawingLine = false;
+    // =====================================
+    // 当前选中的两个线索
+    // =====================================
 
-    // 推理表（暂时硬编码，后续可从 CharacterData 读取）
-    private Dictionary<(string, string), string> reasoningTable = new Dictionary<(string, string), string>
-    {
-        { ("clothes", "work_card"), "安检员" },
-        { ("work_card", "clothes"), "安检员" },
-        
-    };
+    private ClueEntry selectedEntryA;
+    private ClueEntry selectedEntryB;
+
+    // =====================================
+    // 初始化
+    // =====================================
 
     private void Awake()
     {
-        if (Instance != null && Instance != this) { Destroy(gameObject); return; }
-        Instance = this;
-        DontDestroyOnLoad(gameObject);
-    }
-
-    //private void Start()
-    //{
-    //    // 初始隐藏连线
-    //    if (lineRenderer != null)
-    //        lineRenderer.positionCount = 0;
-    //}
-
-    // ========== 收集线索 ==========
-    public void AddClue(string clueID)
-    {
-        Debug.Log($"[路径追踪] 1. AddClue 被调用: {clueID}");
-
-        if (collectedClues.Contains(clueID)) return;
-        collectedClues.Add(clueID);
-
-        Debug.Log($"[路径追踪] 2. 准备跳转 CreateClueEntry");
-
-        try
+        if (Instance != null && Instance != this)
         {
-            CreateClueEntry(clueID);
-        }
-        catch (System.Exception e)
-        {
-            Debug.LogError($"[崩溃捕捉] 调用 CreateClueEntry 时发生异常: {e.Message}\n{e.StackTrace}");
-        }
-    }
-
-    private void CreateClueEntry(string clueID)
-    {
-        // 这一行必须是函数的第一行！
-        Debug.Log($"[路径追踪] 3. 已经成功进入 CreateClueEntry !! 传入 ID 是: {clueID}");
-
-        if (clueEntryPrefab == null || clueListParent == null)
-        {
-            Debug.LogError("❌ 实例化失败：Prefab 或 Parent 为空！请检查 Inspector 面板赋值。");
+            Destroy(gameObject);
             return;
         }
 
-        // 执行实例化
-        GameObject entryGO = Instantiate(clueEntryPrefab, clueListParent);
-        Debug.Log($"[路径追踪] 4. Instantiate 执行完毕，生成物体: {entryGO.name}");
+        Instance = this;
+    }
 
-        // 强制显示
-        entryGO.SetActive(true);
+    // =====================================
+    // 收集线索
+    // =====================================
 
-        // 重置 UI 坐标（防止飞出屏幕）
-        RectTransform rt = entryGO.GetComponent<RectTransform>();
-        rt.localPosition = Vector3.zero;
-        rt.localScale = Vector3.one;
+    public void AddClue(string clueID)
+    {
+        CharacterData current =
+            GameManager.Instance.currentCharacter;
 
-        ClueEntry entryScript = entryGO.GetComponent<ClueEntry>();
-        if (entryScript != null)
+        // 已收集
+        if (current.collectedClueIDs.Contains(clueID))
+            return;
+
+        // 加入当前人物
+        current.collectedClueIDs.Add(clueID);
+
+        // 生成UI
+        CreateClueEntry(clueID);
+
+        Debug.Log("收集线索：" + clueID);
+    }
+
+    // =====================================
+    // 创建文件夹线索
+    // =====================================
+
+    private void CreateClueEntry(string clueID)
+    {
+        if (clueEntryPrefab == null
+            || clueListParent == null)
         {
-            string displayName = clueDisplayNames.ContainsKey(clueID) ? clueDisplayNames[clueID] : clueID;
-            entryScript.SetUp(clueID, displayName);
+            Debug.LogError("线索Prefab或Parent为空");
+            return;
+        }
+
+        GameObject obj =
+            Instantiate(
+                clueEntryPrefab,
+                clueListParent
+            );
+
+        ClueEntry entry =
+            obj.GetComponent<ClueEntry>();
+
+        if (entry != null)
+        {
+            entry.SetUp(
+                clueID,
+                GetDisplayName(clueID)
+            );
         }
     }
-    public bool HasClue(string clueID) => collectedClues.Contains(clueID);
 
-    // ========== 新增：点击线索处理 ==========
-    public void OnClueEntryClicked(ClueEntry entry)
+    // =====================================
+    // 获取显示名字
+    // =====================================
+
+    private string GetDisplayName(string id)
     {
-        Debug.Log("Manager收到点击：" + entry.clueID);
+        CharacterData current =
+            GameManager.Instance.currentCharacter;
+
+        // 普通线索
+        foreach (ClueData clue in current.clues)
+        {
+            if (clue.clueId == id)
+            {
+                return clue.clueName;
+            }
+        }
+
+        // Bubble
+        foreach (BubbleData bubble in current.bubbles)
+        {
+            if (bubble.bubbleId == id)
+            {
+                return bubble.bubbleName;
+            }
+        }
+
+        return id;
+    }
+
+    // =====================================
+    // 是否拥有线索
+    // =====================================
+
+    public bool HasClue(string clueID)
+    {
+        CharacterData current =
+            GameManager.Instance.currentCharacter;
+
+        return current.collectedClueIDs.Contains(clueID);
+    }
+
+    // =====================================
+    // 点击线索
+    // =====================================
+
+    public void OnClueEntryClicked(
+        ClueEntry entry
+    )
+    {
+        // 第一个
         if (selectedEntryA == null)
         {
-            // 第一次选中
             selectedEntryA = entry;
-            Highlight(selectedEntryA, true);
-            Debug.Log("✔ 选中第一个");
-            //StartDrawingLine(entry);
+
+            Highlight(
+                selectedEntryA,
+                true
+            );
+
+            return;
         }
-        else if (selectedEntryA == entry)
+
+        // 点同一个取消
+        if (selectedEntryA == entry)
         {
-            // 再次点击同一个：取消选中
             ClearSelection();
+            return;
         }
-        else if (selectedEntryB == null)
+
+        // 第二个
+        if (selectedEntryB == null)
         {
-            // 选中第二个
             selectedEntryB = entry;
-            Highlight(selectedEntryB, true);
-            Debug.Log("✔ 选中第二个");
-            //CompleteLine(entry);   // 连线固定到第二个
+
+            Highlight(
+                selectedEntryB,
+                true
+            );
         }
     }
 
-    // 高亮/取消高亮
-    private void Highlight(ClueEntry entry, bool on)
+    // =====================================
+    // 高亮
+    // =====================================
+
+    private void Highlight(
+        ClueEntry entry,
+        bool on
+    )
     {
         if (entry.label != null)
-            entry.label.color = on ? Color.yellow : Color.white; // 简单颜色切换
-    }
-
-    // 开始画线（跟随鼠标）
-    //private void StartDrawingLine(ClueEntry startEntry)
-    //{
-    //    if (lineRenderer == null) return;
-
-    //    isDrawingLine = true;
-    //    lineRenderer.positionCount = 2;
-
-    //    Vector3 startScreen = RectTransformUtility.WorldToScreenPoint(
-    //        uiCamera, startEntry.transform.position);
-
-    //    Vector3 startWorld = ScreenToWorld(startScreen);
-
-    //    lineRenderer.SetPosition(0, startWorld);
-    //    lineRenderer.SetPosition(1, startWorld);
-    //}
-
-    // 完成连线（固定到第二个线索）
-    //private void CompleteLine(ClueEntry endEntry)
-    //{
-    //    isDrawingLine = false;
-
-    //    Vector3 endScreen = RectTransformUtility.WorldToScreenPoint(
-    //        uiCamera, endEntry.transform.position);
-
-    //    Vector3 endWorld = ScreenToWorld(endScreen);
-
-    //    lineRenderer.SetPosition(1, endWorld);
-    //}
-
-    // 每帧更新线条终点（跟随鼠标）
-    private void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Space)
-            && selectedEntryA != null
-            && selectedEntryB != null)
         {
-            TryReasoning();
+            entry.label.color =
+                on
+                ? Color.yellow
+                : Color.white;
         }
     }
 
-    //private void UpdateLineEndPoint()
-    //{
-    //    Vector3 worldPos = ScreenToWorld(Input.mousePosition);
-    //    lineRenderer.SetPosition(1, worldPos);
-    //}
+    // =====================================
+    // Update
+    // =====================================
 
-    // 清除选中和连线
-    public void ClearSelection()
+    private void Update()
     {
-        if (selectedEntryA != null) Highlight(selectedEntryA, false);
-        if (selectedEntryB != null) Highlight(selectedEntryB, false);
-
-        selectedEntryA = null;
-        selectedEntryB = null;
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            if (selectedEntryA != null
+                && selectedEntryB != null)
+            {
+                TryReasoning();
+            }
+        }
     }
 
-    // ========== 推理逻辑 ==========
+    // =====================================
+    // 推理逻辑
+    // =====================================
+
     private void TryReasoning()
     {
         string idA = selectedEntryA.clueID;
         string idB = selectedEntryB.clueID;
 
-        // ----- 新增：按字母序排序，忽略用户点击顺序 -----
-        string first = string.Compare(idA, idB) < 0 ? idA : idB;
-        string second = string.Compare(idA, idB) < 0 ? idB : idA;
+        CharacterData current =
+            GameManager.Instance.currentCharacter;
 
-        if (reasoningTable.TryGetValue((first, second), out string conclusionID))
+        foreach (BubbleData bubble in current.bubbles)
         {
-            Debug.Log($"推理成功，得到结论：{conclusionID}");
-            AddConclusionClue(conclusionID);
-            ClearSelection();
+            // 已解锁
+            if (bubble.unlocked)
+                continue;
+
+            // 必须两个条件
+            if (bubble.requiredClues.Count != 2)
+                continue;
+
+            string needA =
+                bubble.requiredClues[0];
+
+            string needB =
+                bubble.requiredClues[1];
+
+            bool success =
+                (idA == needA && idB == needB)
+                ||
+                (idA == needB && idB == needA);
+
+            if (success)
+            {
+                Debug.Log(
+                    "推理成功："
+                    + bubble.bubbleName
+                );
+
+                bubble.unlocked = true;
+
+                AddConclusionBubble(
+                    bubble
+                );
+
+                ClearSelection();
+
+                return;
+            }
         }
-        else
-        {
-            Debug.Log("推理失败");
-            StartCoroutine(ShowFailTip());
-            ClearSelection();
-        }
+
+        // 失败
+        Debug.Log("推理失败");
+
+        StartCoroutine(
+            ShowFailTip()
+        );
+
+        ClearSelection();
     }
 
-    // 添加结论线索（特殊显示）
-    private void AddConclusionClue(string clueID)
-    {
-        if (collectedClues.Contains(clueID)) return;
-        collectedClues.Add(clueID);
+    // =====================================
+    // 添加推理结果
+    // =====================================
 
-        // 生成条目，但用金色字体
-        if (clueEntryPrefab != null && clueListParent != null)
+    private void AddConclusionBubble(
+        BubbleData bubble
+    )
+    {
+        CharacterData current =
+            GameManager.Instance.currentCharacter;
+
+        // 已拥有
+        if (current.collectedClueIDs.Contains(
+            bubble.bubbleId))
         {
-            string displayName = clueDisplayNames.ContainsKey(clueID) ? clueDisplayNames[clueID] : clueID;
-            GameObject entryGO = Instantiate(clueEntryPrefab, clueListParent);
-            TMP_Text tmpText = entryGO.GetComponentInChildren<TMP_Text>();
-            if (tmpText == null) tmpText = entryGO.GetComponent<TMP_Text>();
-            if (tmpText != null)
-            {
-                tmpText.text = displayName;
-                tmpText.color = new Color(1f, 0.84f, 0f); // 金色
-            }
-            ClueEntry clueEntry = entryGO.GetComponent<ClueEntry>();
-            if (clueEntry != null)
-            {
-                clueEntry.SetUp(clueID, displayName);
-                clueEntry.label.color = new Color(1f, 0.84f, 0f);
-            }
+            return;
         }
 
-        // ----- 新增：在主界面生成可拖拽气泡 -----
+        // 加入线索
+        current.collectedClueIDs.Add(
+            bubble.bubbleId
+        );
+
+        // 文件夹生成文字
+        CreateClueEntry(
+            bubble.bubbleId
+        );
+
+        // 主界面生成Bubble
         if (BubbleManager.Instance != null)
         {
-            string displayName = clueDisplayNames.ContainsKey(clueID) ? clueDisplayNames[clueID] : clueID;
-            BubbleManager.Instance.CreateBubble(displayName);
+            BubbleManager.Instance.CreateBubble(
+                bubble.bubbleName
+            );
         }
     }
-    //// 【新增】屏幕坐标 → 世界坐标
-    //Vector3 ScreenToWorld(Vector3 screenPos)
-    //{
-    //    screenPos.z = 50f; // ⭐ 很关键！控制深度（看不到线就调大）
 
-    //    if (uiCamera != null)
-    //        return uiCamera.ScreenToWorldPoint(screenPos);
-    //    else
-    //        return Camera.main.ScreenToWorldPoint(screenPos);
-    //}
-    // 失败提示框
+    // =====================================
+    // 清除选中
+    // =====================================
+
+    public void ClearSelection()
+    {
+        if (selectedEntryA != null)
+        {
+            Highlight(
+                selectedEntryA,
+                false
+            );
+        }
+
+        if (selectedEntryB != null)
+        {
+            Highlight(
+                selectedEntryB,
+                false
+            );
+        }
+
+        selectedEntryA = null;
+        selectedEntryB = null;
+    }
+
+    // =====================================
+    // 推理失败提示
+    // =====================================
+
     private IEnumerator ShowFailTip()
     {
-        if (failTipPrefab == null || failTipParent == null) yield break;
+        if (failTipPrefab == null
+            || failTipParent == null)
+        {
+            yield break;
+        }
 
-        GameObject tip = Instantiate(failTipPrefab, failTipParent);
+        GameObject tip =
+            Instantiate(
+                failTipPrefab,
+                failTipParent
+            );
 
-        TMP_Text text = tip.GetComponentInChildren<TMP_Text>();
+        TMP_Text text =
+            tip.GetComponentInChildren<TMP_Text>();
+
         if (text != null)
+        {
             text.text = "好像没什么关系。";
-
-        tip.transform.SetAsLastSibling();
+        }
 
         yield return new WaitForSeconds(2f);
 
         Destroy(tip);
     }
-}
 
+}

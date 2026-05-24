@@ -144,6 +144,23 @@ public class ItemInfo : MonoBehaviour
     // 点击空白恢复X光
     // =========================================
 
+
+
+    public void SetItem(ItemData data)
+    {
+        itemName = data.itemName;
+
+        itemDescription =
+            data.itemDescription;
+
+        xraySprite = data.xraySprite;
+
+        realSprite = data.realSprite;
+
+        nameColor = data.nameColor;
+
+        sr.sprite = xraySprite;
+    }
     void Update()
     {
         // 鼠标左键点击

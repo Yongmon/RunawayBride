@@ -17,8 +17,7 @@ public class BubbleData
     //[Header("Bubble图片")]
     //public Sprite bubbleSprite;
 
-    [Header("是否已解锁")]
-    public bool unlocked;
+   
 
     // =========================
     // 推理来源
@@ -27,6 +26,8 @@ public class BubbleData
     [Header("需要的线索ID")]
     public List<string> requiredClues;
 
+    [Header("是否已推理获得")]
+    public bool unlocked;
     // =========================
     // 审问内容
     // =========================

@@ -15,20 +15,52 @@ public class GameManager : MonoBehaviour
     {
         Instance = this;
     }
+    // =========================
+    // 游戏开始默认加载第一个人物
+    // =========================
+
+    private void Start()
+    {
+        if (allCharacters.Count > 0)
+        {
+            SwitchCharacter(
+                allCharacters[0].characterId
+            );
+        }
+    }
+
 
     // 切换人物
     public void SwitchCharacter(string characterId)
     {
-        currentCharacter =
-            allCharacters.Find(
-                c => c.characterId == characterId
-            );
+        CharacterData target = null;
 
-        if (currentCharacter != null)
+        foreach (CharacterData c in allCharacters)
         {
-            Debug.Log("切换人物：" + currentCharacter.internalName);
+            if (c.characterId == characterId)
+            {
+                target = c;
+                break;
+            }
+        }
 
-            UIManager.Instance.RefreshUI(currentCharacter);
+        if (target == null)
+        {
+            Debug.LogError("找不到角色：" + characterId);
+            return;
+        }
+
+        currentCharacter = target;
+
+        Debug.Log("切换人物：" + target.internalName);
+
+        // 刷新UI
+        UIManager.Instance.RefreshUI(target);
+
+        // 刷新物品
+        if (ItemManager.Instance != null)
+        {
+            ItemManager.Instance.RefreshItems(target);
         }
     }
 }

@@ -28,6 +28,9 @@ public class CharacterData
     [Header("普通线索")]
     public List<ClueData> clues;
 
+    [Header("已收集线索ID")]
+    public List<string> collectedClueIDs;
+
     [Header("推理Bubble")]
     public List<BubbleData> bubbles;
 

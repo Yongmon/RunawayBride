@@ -40,6 +40,7 @@
 //        itemInfoPanel.SetActive(false);
 //        currentSelected = null;
 //    }
+//“物品信息框管理器”代码
 //}
 
 using UnityEngine;

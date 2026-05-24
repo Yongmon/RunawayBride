@@ -16,8 +16,8 @@ public class UIManager : MonoBehaviour
     [Header("行李箱背景")]
     public Image suitcaseBackgroundImage;
 
-    [Header("场景背景")]
-    public Image sceneBackgroundImage;
+    //[Header("场景背景")]
+    //public Image sceneBackgroundImage;
 
     // ======================================
     // 文件夹线索（这个继续动态生成）
@@ -34,22 +34,103 @@ public class UIManager : MonoBehaviour
     // ======================================
 
     //[Header("场景中的物品槽位")]
-   // public List<ItemUI> itemSlots;
+    // public List<ItemUI> itemSlots;
 
     private void Awake()
     {
         Instance = this;
-    }
 
+        Debug.Log("portraitImage 当前值：" + portraitImage);
+    }
     // ======================================
     // 刷新整个UI
     // ======================================
 
     public void RefreshUI(CharacterData data)
     {
-        // ======================================
-        // 刷新人物图片
-        // ======================================
+        Debug.Log("===== 开始刷新UI =====");
+
+        // =========================
+        // data 检查
+        // =========================
+
+        if (data == null)
+        {
+            Debug.LogError("❌ data 是 NULL！");
+            return;
+        }
+
+        Debug.Log("当前角色：" + data.internalName);
+
+        // =========================
+        // portraitImage 检查
+        // =========================
+
+        if (portraitImage == null)
+        {
+            Debug.LogError("❌ portraitImage 没拖！");
+        }
+        else
+        {
+            Debug.Log("✅ portraitImage 正常");
+        }
+
+        if (data.portrait == null)
+        {
+            Debug.LogError("❌ data.portrait 没设置！");
+        }
+        else
+        {
+            Debug.Log("✅ data.portrait 正常");
+        }
+
+        // =========================
+        // folderPortraitImage 检查
+        // =========================
+
+        if (folderPortraitImage == null)
+        {
+            Debug.LogError("❌ folderPortraitImage 没拖！");
+        }
+        else
+        {
+            Debug.Log("✅ folderPortraitImage 正常");
+        }
+
+        if (data.folderPortrait == null)
+        {
+            Debug.LogError("❌ data.folderPortrait 没设置！");
+        }
+        else
+        {
+            Debug.Log("✅ data.folderPortrait 正常");
+        }
+
+        // =========================
+        // suitcaseBackgroundImage 检查
+        // =========================
+
+        if (suitcaseBackgroundImage == null)
+        {
+            Debug.LogError("❌ suitcaseBackgroundImage 没拖！");
+        }
+        else
+        {
+            Debug.Log("✅ suitcaseBackgroundImage 正常");
+        }
+
+        if (data.suitcaseBackground == null)
+        {
+            Debug.LogError("❌ data.suitcaseBackground 没设置！");
+        }
+        else
+        {
+            Debug.Log("✅ data.suitcaseBackground 正常");
+        }
+
+        // =========================
+        // 真正赋值
+        // =========================
 
         portraitImage.sprite = data.portrait;
 
@@ -59,20 +140,13 @@ public class UIManager : MonoBehaviour
         suitcaseBackgroundImage.sprite =
             data.suitcaseBackground;
 
-        //sceneBackgroundImage.sprite =
-        //    data.sceneBackground;
-
-        // ======================================
-        // 刷新场景物品（重点）
-        // ======================================
-
-       // RefreshItems(data);
-
-        // ======================================
-        // 刷新文件夹线索
-        // ======================================
+        // =========================
+        // 刷新线索
+        // =========================
 
         RefreshClues(data);
+
+        Debug.Log("===== UI刷新完成 =====");
     }
 
     // ======================================
