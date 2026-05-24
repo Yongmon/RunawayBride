@@ -423,6 +423,8 @@ GameObject:
   - component: {fileID: 222311929}
   - component: {fileID: 222311928}
   - component: {fileID: 222311930}
+  - component: {fileID: 222311931}
+  - component: {fileID: 222311932}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -495,6 +497,101 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   reasoningPanel: {fileID: 67300509}
+--- !u!114 &222311931
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222311925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 65289ea48b6274644853f90bd61f70c9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  allCharacters:
+  - characterId: 1
+    internalName: "\u5B89\u68C0\u5458\uFF08\u961F\u957F\uFF09"
+    portrait: {fileID: 1804559280, guid: a44802a153d8fd444909b05401a128d5, type: 3}
+    folderPortrait: {fileID: 21300000, guid: 891271fa5bb357440b3fb6c6c5a74624, type: 3}
+    suitcaseBackground: {fileID: -1457830201, guid: fa015dba1fb17474db3eba862e0849bf, type: 3}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+  - characterId: 2
+    internalName: "\u5973\u4E3B"
+    portrait: {fileID: 0}
+    folderPortrait: {fileID: 0}
+    suitcaseBackground: {fileID: 0}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+  - characterId: 
+    internalName: 
+    portrait: {fileID: 0}
+    folderPortrait: {fileID: 0}
+    suitcaseBackground: {fileID: 0}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+  - characterId: 
+    internalName: 
+    portrait: {fileID: 0}
+    folderPortrait: {fileID: 0}
+    suitcaseBackground: {fileID: 0}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+  - characterId: 
+    internalName: 
+    portrait: {fileID: 0}
+    folderPortrait: {fileID: 0}
+    suitcaseBackground: {fileID: 0}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+  - characterId: 
+    internalName: 
+    portrait: {fileID: 0}
+    folderPortrait: {fileID: 0}
+    suitcaseBackground: {fileID: 0}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+  currentCharacter:
+    characterId: 
+    internalName: 
+    portrait: {fileID: 0}
+    folderPortrait: {fileID: 0}
+    suitcaseBackground: {fileID: 0}
+    sceneBackground: {fileID: 0}
+    clues: []
+    bubbles: []
+    isCompleted: 0
+--- !u!114 &222311932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 222311925}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: afd2ef487f668f04b91c118224111dab, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  portraitImage: {fileID: 0}
+  folderPortraitImage: {fileID: 0}
+  suitcaseBackgroundImage: {fileID: 0}
+  sceneBackgroundImage: {fileID: 0}
+  clueFolderParent: {fileID: 0}
+  cluePrefab: {fileID: 0}
 --- !u!1 &229061145
 GameObject:
   m_ObjectHideFlags: 0
@@ -728,8 +825,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u672C\u5B50"
-  itemDescription: "\u597D\u50CF\u6CA1\u4EC0\u4E48\u5173\u7CFB\u3002"
+  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
 --- !u!61 &326367416
 BoxCollider2D:
@@ -913,7 +1010,7 @@ SpriteRenderer:
   m_SortingLayerID: 2103826545
   m_SortingLayer: 2
   m_SortingOrder: 0
-  m_Sprite: {fileID: 1771317140, guid: ea494c0cfbacbd64fadf9e7a97836d4e, type: 3}
+  m_Sprite: {fileID: 1804559280, guid: a44802a153d8fd444909b05401a128d5, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -983,18 +1080,18 @@ BoxCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
+  m_Offset: {x: 0.019553185, y: 0.06817269}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
-    oldSize: {x: 11.971281, y: 15.84}
+    oldSize: {x: 9.52102, y: 15.039999}
     newSize: {x: 11.971281, y: 15.84}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 11.971281, y: 15.84}
+  m_Size: {x: 9.750656, y: 15.362793}
   m_EdgeRadius: 0
 --- !u!1 &428238509
 GameObject:
@@ -2027,8 +2124,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u96E8\u9774"
-  itemDescription: "\u4E00\u53CC\u5E95\u90E8\u82B1\u7EB9\u975E\u5E38\u72EC\u7279\u7684\u957F\u7B52\u96E8\u9774\uFF0C\u7B49\u7B49\uFF0C\u978B\u5E95\u597D\u50CF\u6709\u4E00\u4E9B\u6CE5\u571F\u3002"
+  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
 --- !u!61 &643368263
 BoxCollider2D:
@@ -2439,7 +2536,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemName: "\u624B\u7535\u7B52"
-  itemDescription: "\u4E00\u4E2A\u6237\u5916\u624B\u7535\u7B52\uFF0C\u636E\u8BF4\u7EED\u822A\u65F6\u95F4\u975E\u5E38\u957F\u54E6\u3002"
+  itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
 --- !u!114 &954717407
 MonoBehaviour:
@@ -2836,8 +2933,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -110.98, y: -6.999}
-  m_SizeDelta: {x: -750.124, y: 691.033}
+  m_AnchoredPosition: {x: -110.98, y: 13.213}
+  m_SizeDelta: {x: -750.124, y: 730.986}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1202941338
 MonoBehaviour:
@@ -3567,8 +3664,8 @@ Transform:
   m_GameObject: {fileID: 1490416473}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.3, y: 1.46, z: 0}
-  m_LocalScale: {x: 1, y: 0.9773772, z: 1}
+  m_LocalPosition: {x: -6.2822, y: 1.6465, z: 0}
+  m_LocalScale: {x: 1.0064, y: 0.92860603, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -3586,6 +3683,7 @@ GameObject:
   - component: {fileID: 1564223180}
   - component: {fileID: 1564223183}
   - component: {fileID: 1564223184}
+  - component: {fileID: 1564223185}
   m_Layer: 0
   m_Name: "\u5DE5\u724C_0"
   m_TagString: Untagged
@@ -3717,8 +3815,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u5DE5\u724C"
-  itemDescription: "\u4E00\u5F20<link=\"IDcard\"><color=#FF8C00>\u5DE5\u4F5C\u724C</color></link>\uFF0C\u7167\u7247\u4E0A\u7684\u4EBA\u6BD4\u672C\u4EBA\u66F4\u7CBE\u795E\u4E00\u70B9\u3002\r\n\r\n"
+  itemName: "\u5DE5\u4F5C\u724C"
+  itemDescription: "\u4E00\u5F20\u5DE5\u4F5C\u724C\uFF0C\u7167\u7247\u4E0A\u7684\u4EBA\u6BD4\u672C\u4EBA<link=\"more_spirited\">\r\n<color=#FF8C00>\u66F4\u7CBE\u795E</color></link>\u4E00\u70B9\u3002"
   nameColor: '#1E3A8A'
 --- !u!114 &1564223184
 MonoBehaviour:
@@ -3735,6 +3833,19 @@ MonoBehaviour:
   clueID: 
   normalSprite: {fileID: -1994344370, guid: 857c05d258f9ec44fa6b8a94a88f223f, type: 3}
   highlightSprite: {fileID: -1408557332, guid: 4e469878aec4ed74caa35c94d78e2b26, type: 3}
+--- !u!114 &1564223185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1564223178}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 55cd01cb963214b4dafbcbfccf67b6fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemRenderer: {fileID: 0}
 --- !u!1 &1662276053
 GameObject:
   m_ObjectHideFlags: 0
@@ -3968,8 +4079,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u5236\u670D"
-  itemDescription: "\u5E76\u4E0D\u5408\u8EAB\u7684<link=\"clothes\"><color=#7A8FA6>\u5236\u670D</color></link>\uFF0C\u9886\u53E3\u4E0A\u6709\u4E00\u679A\u53E3\u7EA2\u5370\uFF0C\u8FD9\u4F1A\u662F\u7EBF\u7D22\u5417\uFF1F"
+  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
 --- !u!61 &1713398748
 BoxCollider2D:
@@ -5121,8 +5232,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9bec6e6c0bf0d064c94dc37b4d484867, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemName: "\u6C34\u676F"
-  itemDescription: "\u5BF9\u793E\u755C\u53CB\u597D\u7684<link=\"Insulated cup\"><color=#FF8C00>\u4FDD\u6E29\u676F</color></link>\u3002"
+  itemName: "\u7269\u54C1\u540D\u79F0"
+  itemDescription: "\u8FD9\u662F\u7269\u54C1\u7684\u63CF\u8FF0\u3002"
   nameColor: '#1E3A8A'
 --- !u!61 &2043806462
 BoxCollider2D:
