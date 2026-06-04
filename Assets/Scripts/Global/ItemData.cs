@@ -27,13 +27,18 @@ public class ItemData
     [TextArea]
     public string itemDescription;
 
-    [Header("生成位置")]
-    public Vector2 position;
+    // =========================
+    // UI参数
+    // =========================
 
-    [Header("缩放")]
-    public Vector2 scale = Vector2.one;
+    [Header("UI位置")]
+    public Vector2 uiPosition;
 
+    [Header("UI大小")]
+    public Vector2 uiSize =
+        new Vector2(100, 100);
 
     [Header("标题颜色")]
-    public string nameColor = "#1E3A8A";
+    public string nameColor =
+        "#1E3A8A";
 }

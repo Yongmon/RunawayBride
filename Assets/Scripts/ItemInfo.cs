@@ -1,31 +1,22 @@
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
-public class ItemInfo : MonoBehaviour
+public class ItemInfo :
+    MonoBehaviour,
+    IPointerClickHandler
 {
-    // =========================================
-    // 当前唯一选中的物品（核心）
-    // =========================================
-
     public static ItemInfo CurrentSelected;
-
-    // =========================================
-    // 物品信息
-    // =========================================
 
     [Header("物品名称")]
     public string itemName = "物品名称";
 
     [TextArea]
     [Header("物品描述")]
-    public string itemDescription = "这是物品的描述。";
+    public string itemDescription = "这是物品描述";
 
     [Header("标题颜色")]
     public string nameColor = "#1E3A8A";
-
-    // =========================================
-    // 图片
-    // =========================================
 
     [Header("X光图片")]
     public Sprite xraySprite;
@@ -33,72 +24,51 @@ public class ItemInfo : MonoBehaviour
     [Header("实物图片")]
     public Sprite realSprite;
 
-    // =========================================
-    // 组件
-    // =========================================
+    private Image img;
 
-    private SpriteRenderer sr;
-
-    // 当前是否显示实物
-    private bool showingReal = false;
-
-    // =========================================
-    // 初始化
-    // =========================================
-
-    void Start()
+    private void Awake()
     {
-        sr = GetComponent<SpriteRenderer>();
+        img = GetComponentInChildren<Image>();
 
-        // 默认显示X光
-        ShowXray();
+        Debug.Log("当前物体：" + gameObject.name);
+
+        if (img == null)
+        {
+            Debug.LogError("没有找到Image组件！");
+        }
+        else
+        {
+            Debug.Log("找到Image：" + img.gameObject.name);
+        }
     }
 
-    // =========================================
-    // 鼠标点击
-    // =========================================
+    // =====================================
+    // UI点击
+    // =====================================
 
-    void OnMouseDown()
+    public void OnPointerClick(PointerEventData eventData)
     {
-        // 点到UI时不处理
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
-
-        // =====================================
-        // 如果已经是当前物品
-        // 再点一次 -> 切回X光
-        // =====================================
-
+        // 再点一次 -> 关闭
         if (CurrentSelected == this)
         {
             ShowXray();
 
             CurrentSelected = null;
 
+            ItemUIManager.Instance.Hide();
+
             return;
         }
 
-        // =====================================
-        // 如果之前有别的物品
-        // 让它恢复X光
-        // =====================================
-
+        // 取消旧选中
         if (CurrentSelected != null)
         {
             CurrentSelected.ShowXray();
         }
 
-        // =====================================
-        // 当前物品显示实物
-        // =====================================
-
         CurrentSelected = this;
 
         ShowReal();
-
-        // =====================================
-        // 显示描述框
-        // =====================================
 
         string message =
             $"<color={nameColor}>"
@@ -106,52 +76,42 @@ public class ItemInfo : MonoBehaviour
             + $"</color>\n"
             + itemDescription;
 
-        ItemUIManager.Instance.ShowItem(
-           
-            message
-        );
+        ItemUIManager.Instance.ShowItem(message);
     }
 
-    // =========================================
-    // 显示X光图
-    // =========================================
+    // =====================================
+    // 显示X光
+    // =====================================
 
     public void ShowXray()
     {
-        showingReal = false;
-
-        if (sr != null && xraySprite != null)
+        if (img != null && xraySprite != null)
         {
-            sr.sprite = xraySprite;
+            img.sprite = xraySprite;
         }
     }
 
-    // =========================================
-    // 显示实物图
-    // =========================================
+    // =====================================
+    // 显示实物
+    // =====================================
 
     public void ShowReal()
     {
-        showingReal = true;
-
-        if (sr != null && realSprite != null)
+        if (img != null && realSprite != null)
         {
-            sr.sprite = realSprite;
+            img.sprite = realSprite;
         }
     }
 
-    // =========================================
-    // 点击空白恢复X光
-    // =========================================
-
-
+    // =====================================
+    // 初始化物品
+    // =====================================
 
     public void SetItem(ItemData data)
     {
         itemName = data.itemName;
 
-        itemDescription =
-            data.itemDescription;
+        itemDescription = data.itemDescription;
 
         xraySprite = data.xraySprite;
 
@@ -159,37 +119,9 @@ public class ItemInfo : MonoBehaviour
 
         nameColor = data.nameColor;
 
-        sr.sprite = xraySprite;
-    }
-    void Update()
-    {
-        // 鼠标左键点击
-        if (Input.GetMouseButtonDown(0))
+        if (img != null)
         {
-            // 点到UI则忽略
-            if (EventSystem.current.IsPointerOverGameObject())
-                return;
-
-            // 如果当前不是选中物品
-            // 并且点击到了空白区域
-            if (CurrentSelected == this)
-            {
-                Ray ray =
-                    Camera.main.ScreenPointToRay(
-                        Input.mousePosition
-                    );
-
-                RaycastHit2D hit =
-                    Physics2D.GetRayIntersection(ray);
-
-                // 没点到任何物品
-                if (hit.collider == null)
-                {
-                    ShowXray();
-
-                    CurrentSelected = null;
-                }
-            }
+            img.sprite = xraySprite;
         }
     }
 }
